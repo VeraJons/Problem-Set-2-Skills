@@ -1,0 +1,393 @@
+---
+title: "ProblemSet2Skills"
+author: "Vera Jónsdóttir"
+date: "4/12/2021"
+output:
+  pdf_document: default
+  html_document: default
+  Number of late coins used: 1
+  Collaborated with: Ryan McGinnis
+---
+
+
+
+
+```{r}
+
+library(ggplot2)
+library(dslabs)
+library(tidyverse)
+library(dplyr)
+```
+
+
+1 Git Concepts
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+1 List 4 benefits
+git is a software for distributed version control. List 4 benefits of distributed version control
+-good way to cooperate with others especially when many are working on code or projects
+-good way to be able to reinstate old versions
+-good way to back up work
+-good way to keep track of big projects and to make sure everybody is using the same version
+
+
+i. What is the remote repository for this homework?
+The remote repository for this homework the common class repository which we use to exchange any changes to our R Studio files. The remote repository is stored in GitHub Desktop. It is called datasci-harris/git-github-basics(studentname). Each student has their own private repository.
+
+ii. How do you add a file to staging in github?
+You need to press Staged and then it will automatically become staged. Then you should press Commit and then push for it to go fully into github.
+
+iii. How do you commit an issue to the local repository?
+First you need to make sure you start a new project which has version control.Then you make sure that the file/project is connected to your repository before you start editing the file. You find the link for the file at GitHub Desktop. Then you go to File -> New Prokect -> Version Control -> Git and you paste the link. Then each time you need to go to Git ->  staged -> commit. Then you also need to remember to select push to push the file to github.
+
+iv. How does github desktop decide what part of your code to show in the main part of the window?
+Github chooses the most up to date code to show at each time. It chooses the code I upload when I select Commit and Push. 
+
+
+v. What branch are you on right now?
+Currently I have only one branch for this Problem Set which is the main branch.
+
+vi. If you were to click on "current branch", type a name and click the "New Branch" button, you would create a new branch
+a. What would happen to the files in your working directory?
+They may move between branches and there will be a new version of my code in the data. You must be careful to be in the correct branch at each time.
+b. what would happens in the remote repo?
+There would be a new branch and it may be that the remote repository will now be able to find it.
+c. what changes, if anything?
+There is an extra branch and the data could start floating around between two locations if we're not careful
+d. why would you want to work on a different branch?
+Perhaps it will help organize different projects and problem sets or keep two different versions of the data. it is good to use branches to safely experiment with projects with out destroying the original project
+
+
+2.1  Debugging mindset
+2.1.1
+```{r}
+my_variable <- 10
+my_varıable
+```
+This code runs smoothly in my laptop. However, there may be an issue with 
+running the second variable as it is not written in the same way as the first
+line of code.
+
+2.1.2 Fix the following code so it works
+```{r}
+
+View(polls_us_election_2016)
+library(dslabs)
+ggplot(data = polls_us_election_2016) +
+  geom_point(mapping = aes(x = startdate,
+                           y = rawpoll_trump))
+
+filter(polls_us_election_2016, state == "Florida") %>% head()
+filter(polls_us_election_2016, as.numeric(grade) > 3) %>% head()
+
+```
+
+2.1.3.Press Alt (Option) + Shift + K. What happens? How can you get to the same place using the 
+menus?
+
+```{r}
+#Alt (Option) + Shift + K shows us a preview of Keyboard Shortcut Quick References. In order to do this from menus you need to go to tools-->keyboard shortcuts. 
+```
+
+2.2  Filter 
+2.2.1. Using the polls_us_election_2016data frame in the ds labs package find the following
+2.2.1.1. Polls for the states of Hawaii and Alaska
+```{r}
+filter(polls_us_election_2016, state == "Alaska" | state == "Hawaii") %>% head(10)
+```
+2.2.1.2
+```{r}
+filter(polls_us_election_2016, samplesize > 500)%>% head(10)
+```
+2.2.1.3
+```{r}
+pdd <- filter(polls_us_election_2016, pollster =="YouGov"|pollster =="Google Consumer Surveys"|pollster =="SurveyMonkey")
+head(pdd)
+
+```
+2.2.1.4
+```{r}
+filter(polls_us_election_2016, as.numeric(grade) == 10 & rawpoll_trump<30)
+```
+2.2.1.5
+```{r}
+filter(polls_us_election_2016, adjpoll_clinton >=40 & adjpoll_clinton <=60)%>% head()
+```
+2.2.1.6
+```{r}
+filter(polls_us_election_2016, rawpoll_trump >= rawpoll_clinton + 10)%>% head()
+```
+2.2.1.7
+```{r}
+filter(polls_us_election_2016, rawpoll_mcmullin > 5)%>% head()
+```
+
+2.2.2.1
+```{r}
+filter(polls_us_election_2016, rawpoll_trump > 60 & startdate>="2016-01-01" & startdate<="2016-01-31")
+```
+This is the poll.
+
+2.2.2.1
+```{r}
+filter(polls_us_election_2016, is.na(grade))%>% head()
+```
+you need to change it to is.na. Otherwise R Studio won't understand your function
+
+2.2.2.2
+```{r}
+filter(polls_us_election_2016, is.na(rawpoll_mcmullin))%>% head(10)
+
+```
+4,178 rows withh McMullin are n/a. McMullin may not be very popular in the race so they do not keep very accurate polls on his statistics. He is therefore missing from very many polls.
+
+2.2.2.3
+```{r}
+filter(polls_us_election_2016, as.numeric(grade) == 9)%>% head(10)
+```
+There is no n/a that comes up when we search specifically for a particular letter grade.
+
+
+2.2.2.4
+```{r}
+filter(polls_us_election_2016,  is.na(grade) | as.numeric(grade)>0)%>% head(10)
+```
+It leads to printing of all columns with every possible grade and n/a as well.
+
+2.2.2.5
+```{r}
+filter(polls_us_election_2016,  is.na(grade) | as.numeric(grade) == 0)%>% head(10)
+
+```
+Here we will only get the N/A columns.
+
+2.3.1
+```{r}
+select(polls_us_election_2016, grade, grade, grade)%>% head(10)
+```
+Nothing changes if you repeat the same variable multiple times or if you only name the variable once.
+
+2.3.2
+```{r}
+select(polls_us_election_2016, contains("RAW",ignore.case = TRUE))%>% head(10)
+```
+2.3.3
+```{r}
+select(polls_us_election_2016, contains("clinton") | contains("trump"))%>% head(10)
+select(polls_us_election_2016,rawpoll_clinton:rawpoll_trump | adjpoll_clinton:adjpoll_trump )%>% head(10)
+select(polls_us_election_2016,rawpoll_clinton:adjpoll_trump &-rawpoll_johnson & -rawpoll_mcmullin)%>% head(10)
+```
+
+3.1
+```{r}
+polls_us_election_2016 %>% arrange(desc(rawpoll_clinton))%>%head(1)
+```
+3.2
+```{r}
+polls_us_election_2016 %>% arrange(desc(samplesize))%>%head(5)
+```
+
+3.3
+```{r}
+polls_us_election_2016 %>% arrange(desc(is.na(rawpoll_johnson)))%>% head(10)
+polls_us_election_2016 %>% arrange(desc(is.na(rawpoll_clinton)))%>% head(10)
+polls_us_election_2016 %>% arrange(desc(is.na(rawpoll_trump)))%>% head(10)
+polls_us_election_2016 %>% arrange(desc(is.na(rawpoll_mcmullin)))%>% head(10)
+```
+You put the poll you want to observe within the brackets of is.na()
+
+4.1
+```{r}
+rawcandidate <- polls_us_election_2016 %>% 
+  mutate(raw_trump=rawpoll_trump/100*samplesize) %>%       
+  mutate(raw_clinton=rawpoll_clinton/100*samplesize) %>%
+   mutate(raw_johnson=rawpoll_johnson/100*samplesize) %>%       
+  mutate(raw_mcmullin=rawpoll_mcmullin/100*samplesize)
+
+View(rawcandidate)%>% head(10)
+```
+
+4.2
+```{r}
+df1 <- rawcandidate %>% 
+  mutate(new_variable=samplesize-(raw_trump+raw_clinton))
+ggplot(data = df1,
+       mapping = aes(x = startdate,
+                     y = new_variable)) +
+  geom_point() +
+  geom_smooth(se=TRUE)
+```
+4.3
+```{r}
+df2 <- df1%>%
+  mutate(new_variable = samplesize-(raw_trump+raw_clinton+raw_johnson+raw_mcmullin))
+ggplot(data = df2,
+       mapping = aes(x = startdate,
+                     y = new_variable)) +
+  geom_point() +
+  geom_smooth(se=TRUE)
+```
+4.4
+The reason why is because Johnson is  a big candidate and he polled very well close to the election. We also need to take McMuller out of the picture although he was less significant. He polled very well in Utah for example with 21.5 percent of the votes and third in Idaho.
+
+4.5
+Ths mostly fixes the problem since Johnson was such a big candidate and when he is out of the picture, there is very little disturbing the data.
+
+4.6
+```{r}
+polls_us_election_2016 %>%
+ select(startdate, pollster, rawpoll_johnson) %>%
+ group_by(startdate) %>%
+ mutate(rank = min_rank(desc(rawpoll_johnson)),ties.method = 'first')%>%
+  head(10)
+
+```
+We break ties with the first row that comes up.
+
+5.1
+```{r}
+polls_us_election_2016 %>%
+count(pollster)%>%
+head(10)
+
+polls_us_election_2016 %>%
+  group_by(pollster) %>%
+  summarise(pollster_n=n())%>%
+  head(10)
+
+```
+
+5.2
+```{r}
+polls_us_election_2016 %>% 
+  group_by(grade)%>%
+  filter(state=="Florida")%>%
+  summarise(mean=mean(samplesize))
+```
+
+5.3
+```{r}
+polls_us_election_2016 %>% 
+  group_by(pollster)%>%
+  count(grade)
+```
+It seems so?
+
+5.4
+```{r}
+polls_us_election_2016 %>% 
+  group_by(state)%>%
+  arrange(rawpoll_mcmullin)
+```
+5.5
+```{r}
+polls_us_election_2016 %>%
+  group_by(state) %>%
+	summarize(pollster_n=n()) %>%
+	filter(pollster_n>10) %>%
+  arrange(desc(pollster_n))
+```
+5.6
+```{r}
+  polls_us_election_2016 %>%
+	group_by(grade,population) %>%
+	summarize(max_n=max(rawpoll_trump),min_n=min(rawpoll_trump)) %>%
+  arrange(desc(max_n), desc(min_n))
+
+```
+
+5.7
+```{r}
+polls_us_election_2016 %>%
+  group_by(state) %>%
+	summarize(pollster_n=n()) %>%
+  filter(state =="Alabama" | state == "Arkansas") %>%
+  arrange(desc(pollster_n))
+```
+```{r}
+polls_us_election_2016 %>%
+  group_by(state) %>%
+  filter(state !="Alabama" & state != "Arkansas") %>%
+  summarize(pollster_n=n()) %>%
+  arrange(desc(pollster_n))
+
+```
+
+They are running a total of 1106 polls in the United States excluding the polls in Alabama and Arkansas
+
+6.1.a
+```{r}
+df3 <- polls_us_election_2016%>%
+  mutate(spread=(rawpoll_trump - rawpoll_clinton)/100)
+df3 %>% head(10)
+
+df4 <- polls_us_election_2016%>%
+  mutate(spread=(rawpoll_trump - rawpoll_clinton)/100) %>%
+  group_by(pollster) %>%
+	summarize(spread, mean_spread_n=mean(spread))
+df4 %>% head(10)
+
+
+```
+
+6.1.b.a
+```{r}
+df5 <- df3%>%
+  mutate(p=(spread+1)/2)
+  
+View(df5 %>% head(10))
+
+```
+
+
+6.1.b.b
+```{r}
+
+df6 <- df5%>%
+  mutate(sd=2*sqrt((p*(1-p)/samplesize)))
+View(df6)
+  
+```
+It's true because this is a typical proportional sample and the two candidates dominate.
+
+6.1.b.c
+```{r}
+df7 <-df6%>%
+  mutate(lci=spread-qnorm(0.975)*sd) %>%
+  mutate(uci=spread+qnorm(0.975)*sd) 
+View(df7)
+```
+6.1.c
+```{r}
+df8<- df7%>%
+  mutate(error=spread-0.021)
+View(df8 %>% head(10))
+
+ggplot(data = df8, aes(x = startdate, y = error, 
+                       group = pollster))+
+  geom_point()
+```
+```{r}
+
+
+ggplot(data = df8, aes(x = pollster, y = error, 
+                       group = pollster))+
+  geom_point()
+```
+```{r, fig.width=10,fig.height=25}
+ggplot(data = df8, aes(x = error, y = pollster, 
+                       group = pollster))+
+  theme(axis.text.x = element_text(angle = 90))+
+  geom_point()
+```
+
+```{r, fig.width=10,fig.height=25}
+ggplot(data = df8, aes(x = error, y = pollster, 
+                       group = pollster))+
+  theme(axis.text.x = element_text(angle = 90))+
+  geom_point()
+```
